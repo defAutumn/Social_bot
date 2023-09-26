@@ -21,3 +21,7 @@ class TransportForm(StatesGroup):
     number = State()
     description = State()
     photo_id = State()
+
+
+class GetFormForm(StatesGroup):
+    post_id = State()

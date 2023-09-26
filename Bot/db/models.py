@@ -10,7 +10,7 @@ class PostLandscaping(Base):
 
     location = Column(String, nullable=False)
     description = Column(String, nullable=False)
-    photo_id = Column(BigInteger, nullable=False)
+    photo_id = Column(String, nullable=False)
 
     published = Column(DATE, default=datetime.today())
     status = Column(VARCHAR(50), nullable=False)
@@ -30,7 +30,7 @@ class PostTransport(Base):
     subcategory = Column(VARCHAR(50), nullable=False)
     number = Column(VARCHAR(50), nullable=False)
     description = Column(String, nullable=False)
-    photo_id = Column(BigInteger, nullable=True)
+    photo_id = Column(String, nullable=True)
 
     published = Column(DATE, default=datetime.today())
     status = Column(VARCHAR(50), nullable=False)
@@ -49,7 +49,7 @@ class PostGarbage(Base):
 
     location = Column(String, nullable=False)
     description = Column(String, nullable=False)
-    photo_id = Column(BigInteger, nullable=False)
+    photo_id = Column(String, nullable=False)
 
     published = Column(DATE, default=datetime.today())
     status = Column(VARCHAR(50), nullable=False)

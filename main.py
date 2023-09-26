@@ -18,21 +18,21 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 from Bot.middlewares.db import DbSessionMiddleware
 
-postgres_url = URL.create(
-        'postgresql+asyncpg',
-        username='postgres',
-        port='8054',
-        host='containers-us-west-185.railway.app',
-        password='lFBGr0G96QDhZqtLHCuQ',
-        database='railway',
-    )
+# postgres_url = URL.create(
+#         'postgresql+asyncpg',
+#         username='postgres',
+#         port='8054',
+#         host='containers-us-west-185.railway.app',
+#         password='lFBGr0G96QDhZqtLHCuQ',
+#         database='railway',
+#     )
 
 
 async def main():
 
     bot = Bot(token=config.TOKEN, parse_mode=ParseMode.HTML)
 
-    async_engine = create_async_engine(url='postgresql+asyncpg://postgres:Otu4AT4BtklAc96UGnDr@containers-us-west-46.railway.app:6195/railway')
+    async_engine = create_async_engine(url=config.postgres_url)
 
     session_maker = async_sessionmaker(async_engine, expire_on_commit=False)
 

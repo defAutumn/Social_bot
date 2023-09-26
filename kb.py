@@ -8,8 +8,10 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, KeyboardBu
 
 menu = [
     [
-        InlineKeyboardButton(text="Отправить обращение", callback_data="send_form"),
-        InlineKeyboardButton(text="Пример обращения", callback_data="example_form")
+        InlineKeyboardButton(text="Отправить обращение", callback_data="send_form")
+    ],
+    [
+        InlineKeyboardButton(text="Мои обращения", callback_data="get_forms")
     ],
     [
         InlineKeyboardButton(text="Помощь", callback_data="help"),
