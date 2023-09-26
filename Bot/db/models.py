@@ -59,3 +59,22 @@ class PostGarbage(Base):
 
     def __str__(self):
         return f'Post: {self.post_id}'
+
+
+class PostFreeForm(Base):
+    __tablename__ = 'free_form'
+    post_id = Column(Integer, unique=True, autoincrement=True, nullable=False, primary_key=True)
+    user_id = Column(BigInteger, nullable=False)
+
+    location = Column(String, nullable=False)
+    description = Column(String, nullable=False)
+    photo_id = Column(String, nullable=False)
+
+    published = Column(DATE, default=datetime.today())
+    status = Column(VARCHAR(50), nullable=False)
+
+    def __call__(self, *args, **kwargs):
+        return self.post_id
+
+    def __str__(self):
+        return f'Post: {self.post_id}'

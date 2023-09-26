@@ -14,7 +14,7 @@ menu = [
         InlineKeyboardButton(text="Мои обращения", callback_data="get_forms")
     ],
     [
-        InlineKeyboardButton(text="Помощь", callback_data="help"),
+        InlineKeyboardButton(text="Контакты", callback_data="contacts"),
         InlineKeyboardButton(text="Ссылки", callback_data="links")
     ],
 ]
@@ -36,6 +36,12 @@ categories_kb = InlineKeyboardMarkup(inline_keyboard=[
         InlineKeyboardButton(
             text='Общественный транспорт',
             callback_data='public_transport'
+        )
+    ],
+[
+        InlineKeyboardButton(
+            text='Свободная форма',
+            callback_data='free_form'
         )
     ]
 ])

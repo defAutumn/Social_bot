@@ -30,7 +30,7 @@ from Bot.middlewares.db import DbSessionMiddleware
 
 async def main():
 
-    bot = Bot(token=config.TOKEN, parse_mode=ParseMode.HTML)
+    bot = Bot(token=config.TOKEN, parse_mode=ParseMode.MARKDOWN)
 
     async_engine = create_async_engine(url=config.postgres_url)
 
