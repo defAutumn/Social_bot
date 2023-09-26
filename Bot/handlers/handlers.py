@@ -1,6 +1,7 @@
 import random
 
 from aiogram import F, Router
+from aiogram.enums import ParseMode
 from aiogram.filters import Command
 from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
@@ -34,16 +35,24 @@ subcategories = {
 
 
 @form_router.message(Command("start"))
+async def command_start(message: Message) -> None:
+    await message.answer("Добро пожаловать!")
+    await message.answer("Этот бот создан для проекта <tg-spoiler>(название мы еще не придумали)</tg-spoiler>",
+                         parse_mode=ParseMode.HTML)
+    await message.answer("Меню", reply_markup=kb.menu)
+
+
 @form_router.message(F.text == "Меню")
 @form_router.message(F.text == "Выйти в меню")
-async def command_start(message: Message) -> None:
-    await message.answer("Добро пожаловать", reply_markup=kb.menu)
+async def command_menu(message: Message) -> None:
+    await message.answer("Меню", reply_markup=kb.menu)
 
 
 @form_router.callback_query(F.data == "links")
 async def get_links(message: Message) -> None:
     await message.message.answer(
-        "Открытый регион: `https://or71.ru/`",
+        "Открытый регион: `https://or71.ru/`\n"
+        "Паблик: https://t.me/TulikCoolPublick",
         reply_markup=kb.exit_kb,
     )
 
@@ -131,7 +140,9 @@ async def process_final(message: Message, state: FSMContext, session: AsyncSessi
         await state.clear()
         await show_summary(message=message, data=data, session=session)
     elif message.text:
-        data = await state.update_data(photo_id='https://www.meme-arsenal.com/memes/3e9720428bb388bc7a914790438cc779.jpg')
+        data = await state.update_data(
+            photo_id='https://www.meme-arsenal.com/memes/3e9720428bb388bc7a914790438cc779.jpg'
+        )
         await state.clear()
         await show_summary(message=message, data=data, session=session)
     else:
@@ -200,7 +211,9 @@ async def process_final(message: Message, state: FSMContext, session: AsyncSessi
         await state.clear()
         await show_summary(message=message, data=data, session=session)
     elif message.text:
-        data = await state.update_data(photo_id='https://www.meme-arsenal.com/memes/3e9720428bb388bc7a914790438cc779.jpg')
+        data = await state.update_data(
+            photo_id='https://www.meme-arsenal.com/memes/3e9720428bb388bc7a914790438cc779.jpg'
+        )
         await state.clear()
         await show_summary(message=message, data=data, session=session)
     else:
@@ -272,7 +285,8 @@ async def show_summary(message: Message, data: Dict[str, Any], session: AsyncSes
         get_id = result[-1][0].__dict__['post_id']
 
     await message.answer(f"Большое спасибо! Ваше обращение принято! :)")
-    await message.answer(f"ID для отслеживания: `{category}.{get_id}`", reply_markup=kb.exit_kb)
+    await message.answer(f"ID для отслеживания: `{category}.{get_id}`", reply_markup=kb.exit_kb,
+                         parse_mode=ParseMode.MARKDOWN_V2)
 
 
 async def uncorrect_input(message):
