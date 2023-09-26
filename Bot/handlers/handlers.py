@@ -1,5 +1,5 @@
 import random
-
+import asyncio
 from aiogram import F, Router
 from aiogram.enums import ParseMode
 from aiogram.filters import Command
@@ -37,8 +37,15 @@ subcategories = {
 @form_router.message(Command("start"))
 async def command_start(message: Message) -> None:
     await message.answer("Добро пожаловать!")
-    await message.answer("Этот бот создан для проекта <tg-spoiler>(название мы еще не придумали)</tg-spoiler>",
+    await asyncio.sleep(2)
+    await message.answer("Этот бот создан для проекта <tg-spoiler>(название мы еще не придумали 🤡🤡🤡)</tg-spoiler>\n\n"
+                         "Он позволяет отправить обращение по какой-либо проблеме так же легко, как отправить сообщение\n\n"
+                         "Будем рады, если вы нас поддержите и отправите хотя бы одно обращение. <b>Каждое</b> обращение будет"
+                         " обработано и направлено в соотвествующую инстанцию. Чем больше вы отправите, тем лучше ♥\n\n"
+                         "Ссылка на <a href='https://forms.gle/QmyMuCbLECuY7wSp9'>анкету</a>\n\n"
+                         "<b>Все обращения и их статус будут опубликованы <a href='https://t.me/TulikCoolPublick'>тут</a></b>\n\n",
                          parse_mode=ParseMode.HTML)
+    await asyncio.sleep(15)
     await message.answer("Меню", reply_markup=kb.menu)
 
 
