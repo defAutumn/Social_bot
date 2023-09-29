@@ -8,12 +8,9 @@ import logging
 import sys
 from aiogram import Bot, Dispatcher
 from aiogram.enums.parse_mode import ParseMode
-from sqlalchemy import URL
 
 import config
-from Bot.db import models
 from Bot.handlers.handlers import form_router
-from Bot.db.models import PostTransport
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 from Bot.middlewares.db import DbSessionMiddleware

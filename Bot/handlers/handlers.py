@@ -38,12 +38,16 @@ subcategories = {
 async def command_start(message: Message) -> None:
     await message.answer("Добро пожаловать!")
     await asyncio.sleep(2)
-    await message.answer("Этот бот создан для проекта <tg-spoiler>(название мы еще не придумали 🤡🤡🤡)</tg-spoiler>\n\n"
-                         "Он позволяет отправить обращение по какой-либо проблеме так же легко, как отправить сообщение\n\n"
-                         "Будем рады, если вы нас поддержите и отправите хотя бы одно обращение. <b>Каждое</b> обращение будет"
+    await message.answer("Этот бот создан для проекта <tg-spoiler>(название мы еще не придумали 🤡🤡🤡)"
+                         "</tg-spoiler>\n\n"
+                         "Он позволяет отправить обращение по какой-либо проблеме так же легко, как отправить "
+                         "сообщение\n\n"
+                         "Будем рады, если вы нас поддержите и отправите хотя бы одно обращение. <b>Каждое</b> "
+                         "обращение будет"
                          " обработано и направлено в соотвествующую инстанцию. Чем больше вы отправите, тем лучше ♥\n\n"
                          "Ссылка на <a href='https://forms.gle/QmyMuCbLECuY7wSp9'>анкету</a>\n\n"
-                         "<b>Все обращения и их статус будут опубликованы <a href='https://t.me/TulikCoolPublick'>тут</a></b>\n\n",
+                         "<b>Все обращения и их статус будут опубликованы <a href='https://t.me/TulikCoolPublick'>тут"
+                         "</a></b>\n\n",
                          parse_mode=ParseMode.HTML)
     await asyncio.sleep(15)
     await message.answer("Меню", reply_markup=kb.menu)
@@ -58,7 +62,7 @@ async def command_menu(message: Message) -> None:
 @form_router.callback_query(F.data == "links")
 async def get_links(message: Message) -> None:
     await message.message.answer(
-        "Открытый регион: `https://or71.ru/`\n"
+        "Открытый регион: https://or71.ru/\n\n"
         "Паблик: https://t.me/TulikCoolPublick",
         reply_markup=kb.exit_kb,
     )
@@ -81,7 +85,9 @@ async def process_final(message: Message, state: FSMContext, session: AsyncSessi
     await state.clear()
     result = (await session.execute(select(categories[data[0]][2])
                                     .where(categories[data[0]][2].post_id == int(data[1])))).first()
+    print(result)
     post = result[0].__dict__
+    print(post)
     if data[0] in ['garbage', 'landscaping', 'free_form']:
         await message.answer_photo(post['photo_id'], caption=f'Локация: {post["location"]}\n'
                                                              f'Описание: {post["description"]}\n'
@@ -251,49 +257,52 @@ async def get_number(clbk):
 
 
 async def show_summary(message: Message, data: Dict[str, Any], session: AsyncSession) -> None:
-    category = data["category"]
-    description = data['description']
-    photo_id = data['photo_id']
+    if message.from_user.id == 1061356740:
+        await message.answer('Ты забанен клоун беаный+дурачок')
+    else:
+        category = data["category"]
+        description = data['description']
+        photo_id = data['photo_id']
 
-    if category == 'public_transport':
+        if category == 'public_transport':
 
-        subcategory = data['subcategory']
-        number = data['number']
+            subcategory = data['subcategory']
+            number = data['number']
 
-        await session.merge(PostTransport(
-            user_id=message.from_user.id,
-            subcategory=subcategory,
-            number=number,
-            description=description,
-            photo_id=photo_id,
-            status='Принято'
-        ))
-        await session.commit()
+            await session.merge(PostTransport(
+                user_id=message.from_user.id,
+                subcategory=subcategory,
+                number=number,
+                description=description,
+                photo_id=photo_id,
+                status='Принято'
+            ))
+            await session.commit()
 
-        result = (await session.execute(select(PostTransport).
-                                        where(PostTransport.user_id == message.from_user.id))).all()
-        get_id = result[-1][0].__dict__['post_id']
+            result = (await session.execute(select(PostTransport).
+                                            where(PostTransport.user_id == message.from_user.id))).all()
+            get_id = result[-1][0].__dict__['post_id']
 
-    elif category in ['landscaping', 'garbage', 'free_form']:
+        elif category in ['landscaping', 'garbage', 'free_form']:
 
-        location = data['location']
+            location = data['location']
 
-        await session.merge(categories[category][2](
-            user_id=message.from_user.id,
-            location=location,
-            description=description,
-            photo_id=photo_id,
-            status='Принято'
-        ))
-        await session.commit()
+            await session.merge(categories[category][2](
+                user_id=message.from_user.id,
+                location=location,
+                description=description,
+                photo_id=photo_id,
+                status='Принято'
+            ))
+            await session.commit()
 
-        result = (await session.execute(select(categories[category][2])
-                                        .where(categories[category][2].user_id == message.from_user.id))).all()
-        get_id = result[-1][0].__dict__['post_id']
+            result = (await session.execute(select(categories[category][2])
+                                            .where(categories[category][2].user_id == message.from_user.id))).all()
+            get_id = result[-1][0].__dict__['post_id']
 
-    await message.answer(f"Большое спасибо! Ваше обращение принято! :)")
-    await message.answer(f"ID для отслеживания: `{category}.{get_id}`", reply_markup=kb.exit_kb,
-                         parse_mode=ParseMode.MARKDOWN_V2)
+        await message.answer(f"Большое спасибо! Ваше обращение принято! :)")
+        await message.answer(f"ID для отслеживания: `{category}.{get_id}`", reply_markup=kb.exit_kb,
+                             parse_mode=ParseMode.MARKDOWN_V2)
 
 
 async def uncorrect_input(message):

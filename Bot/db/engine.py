@@ -1,4 +1,4 @@
-from sqlalchemy import URL, create_engine
+from sqlalchemy import URL
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine as _create_async_engine
